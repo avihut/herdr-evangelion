@@ -1,0 +1,145 @@
+{
+  "id": "root",
+  "type": "column",
+  "titlebar": "none",
+  "traffic_lights": [
+    18,
+    23
+  ],
+  "preview": "mods/evangelion/assets/preview.svg",
+  "theme": {
+    "light": "evangelion-light",
+    "dark": "evangelion-dark"
+  },
+  "ui_font": "Geist Mono",
+  "terminal_padding": [
+    8,
+    10
+  ],
+  "background": "canvas",
+  "resizable": false,
+  "children": [
+    {
+      "id": "nerv-top",
+      "type": "block",
+      "content": {
+        "mod": "evangelion",
+        "props": {
+          "role": "top"
+        }
+      },
+      "size": {
+        "px": 62
+      },
+      "window_drag": true
+    },
+    {
+      "id": "nerv-body",
+      "type": "row",
+      "divider": {
+        "width": 1,
+        "color": "border"
+      },
+      "children": [
+        {
+          "id": "sidebar",
+          "type": "block",
+          "content": {
+            "mod": "evangelion",
+            "props": {
+              "role": "side"
+            }
+          },
+          "size": {
+            "px": 268
+          },
+          "min": 210,
+          "max": 410
+        },
+        {
+          "id": "nerv-work",
+          "type": "column",
+          "min": 260,
+          "resizable": false,
+          "padding": 8,
+          "gap": 7,
+          "children": [
+            {
+              "id": "nerv-tabs",
+              "type": "block",
+              "content": {
+                "mod": "evangelion",
+                "props": {
+                  "role": "tabs"
+                }
+              },
+              "size": {
+                "px": 34
+              }
+            },
+            {
+              "id": "nerv-terminal",
+              "type": "block",
+              "content": {
+                "tab": "active",
+                "pane": {
+                  "gap": 8,
+                  "radius": 0,
+                  "background": "background",
+                  "border": {
+                    "width": 1,
+                    "color": "border"
+                  },
+                  "focus": {
+                    "width": 2,
+                    "color": "accent"
+                  },
+                  "lone": true,
+                  "header": {
+                    "height": 28,
+                    "position": "top",
+                    "reveal": "always",
+                    "content": {
+                      "mod": "evangelion",
+                      "props": {
+                        "role": "pane"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "nerv-monitor",
+          "type": "block",
+          "content": {
+            "mod": "evangelion",
+            "props": {
+              "role": "monitor"
+            }
+          },
+          "size": {
+            "px": 220
+          },
+          "min": 200,
+          "max": 320
+        }
+      ]
+    },
+    {
+      "id": "nerv-status",
+      "type": "block",
+      "content": {
+        "mod": "evangelion",
+        "props": {
+          "role": "bottom"
+        }
+      },
+      "size": {
+        "px": 34
+      }
+    }
+  ]
+}

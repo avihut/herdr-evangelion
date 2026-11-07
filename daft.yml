@@ -1,0 +1,12 @@
+layout: contained
+hooks:
+  worktree-post-create:
+    piped: true
+    jobs:
+      - name: trust-environment
+        run: mise trust
+      - name: install-tools
+        run: mise install
+
+relations:
+  - url: https://github.com/avihut/herdr-fallout

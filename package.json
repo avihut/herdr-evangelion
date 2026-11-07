@@ -1,0 +1,9 @@
+{
+  "name": "herdr-evangelion",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NERV operations layout for Herdr with EVA agents, MAGI telemetry and training games",
+  "license": "MIT",
+  "scripts": { "test": "node --test tests/model.test.mjs" }
+}
