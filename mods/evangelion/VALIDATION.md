@@ -13,3 +13,11 @@ Checked on macOS with the installed Herdr native runtime on 2026-11-07.
 - Final live status had no runtime errors or overlays. The previous Windows XP layout and original appearance setting were restored.
 
 Native fixtures validate description construction, not geometry or later callbacks. Private QA captures remain local; the public preview is illustrated SVG, not evidence of live behavior.
+
+## Optional pane-name integration and installer update
+
+The integration source passed 23 native fixtures before the host-memory incident. The current source passes 22 isolated tests: 14 JavaScript game/parser/integration tests and 8 installer tests. New cases cover missing/malformed capabilities, exact clicked-pane routing, identity-scoped Unicode names, fresh installed import completeness, preserving local extras, rollback after folder-swap and layout-write failures, and retaining recovery data if rollback fails.
+
+The installer now stages a complete mod outside the watched directory and swaps folders. This source-only revision has not been installed into the live window during the incident. A preceding repair installed the missing helper and passed the installed module check.
+
+Live QA of the shared pane-name dependency reported save/reset/cancel, Unicode, stale targets and unfocused-target isolation working. Evangelion-specific live rename acceptance remains pending. Further installs and layout switches were stopped after the active Windows XP mod reported out-of-memory/Null errors. The earlier clean-status record above describes the original layout QA, not this later incident. Native terminal-menu fallback for an absent external mod is documented by Herdr; it has not been clicked live in an installation without that dependency. No app or core restart was performed for this release.

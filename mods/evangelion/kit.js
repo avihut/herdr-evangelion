@@ -1,3 +1,4 @@
+import { paneRenameAvailable } from "./pane-rename.js";
 import { div, image } from "gpui-kit";
 import { h_flex, v_flex } from "gpui-base";
 import { theme, settings, shared, openOverlay, run } from "herdr";
@@ -37,7 +38,11 @@ export function indicator(status) {
 export function openRole(role, extra = {}) {
   return openOverlay({ mod:"evangelion", kind:"dialog", frame:"none", width: role === "agent" ? 440 : 630, height: role === "agent" ? 410 : 640, props:{role,...extra} });
 }
-export const context = (tab,target) => openOverlay({mod:"menu",kind:"popup",width:240,height:320,props:{tab,target}});
+export async function context(tab,target) {
+  if(tab === "pane" && target?.pane && await paneRenameAvailable())
+    return openOverlay({mod:"pane-rename-menu",kind:"popup",frame:"none",width:290,props:{tab,target}});
+  return openOverlay({mod:"menu",kind:"popup",width:240,props:{tab,target}});
+}
 export const newMenu = () => openOverlay({mod:"new-menu",kind:"popup",width:260,height:500});
 export function root() { const p=palette();return v_flex().size_full().min_h(0).bg(p.chrome).text_color(p.foreground).font_family(mono); }
 export function launchFocused() { run("app.palette"); }

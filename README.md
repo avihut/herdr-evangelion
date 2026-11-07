@@ -26,6 +26,10 @@ Codex starts in EVA-01 colors, Claude in EVA-02, and other agents in EVA-00. The
 
 The side panels resize, the MAGI monitor can be hidden, and terminal headers keep split and zoom controls nearby. `?` opens the operations manual. **MOTION** turns off decorative native pulses. There are no automatic sounds or alarm interruptions.
 
+### Optional pane names
+
+Install [Pane Rename](https://github.com/avihut/herdr-pane-rename) to give entry-plug terminals persistent custom titles through the pane menu or its Cmd+F2 shortcut. Blank names restore automatic titles. The integration keeps the clicked pane as its target and falls back to the ordinary menu when the optional capability is unavailable.
+
 ## Two training exercises
 
 Open **SIM** in the top bar. Both games run locally and leave your agents and terminals alone.
@@ -96,7 +100,7 @@ Existing Evangelion files are refused by default. To deliberately update:
 python3 scripts/install.py --update
 ```
 
-Replaced files are backed up under the Herdr home's `.backups/herdr-evangelion-<timestamp>/`; the installer prints that path. `--home /path/to/herdr-home` selects another installation. Each file replacement is atomic, with the non-docking manifest first and layout last. Installation is not a multi-file transaction; backups preserve prior files if an update is interrupted.
+Replaced files are backed up under the Herdr home's `.backups/herdr-evangelion-<timestamp>/`; the installer prints that path. `--home /path/to/herdr-home` selects another installation. The installer stages the complete mod outside the watched directory, preserves local extra files, then swaps the folder with renames. Themes follow and the layout is written last. Failed updates attempt rollback; if rollback fails, the recovery folder is retained and its path is printed. This is not a crash-atomic transaction, so keep the printed backup path. Staging avoids a separate hot reload for every mod file.
 
 ## Build and refine
 

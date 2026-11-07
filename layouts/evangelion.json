@@ -141,5 +141,6 @@
         "px": 34
       }
     }
-  ]
+  ],
+  "terminal_menu": "pane-rename-menu"
 }

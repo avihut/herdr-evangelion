@@ -29,3 +29,7 @@ Use supported native elements; GPUI Background objects cannot currently pass thr
 ## Done when
 
 Standalone checks and pure state tests pass. Live dark/light screenshots show readable controls and terminals, native menu opens at its trigger and switches, agent navigation and game clicks work, network/battery reflect the host, no app errors, previous layout restored after checks. Record exact evidence and any missing human acceptance in VALIDATION.md.
+
+## Optional pane names
+
+[Pane Rename](https://github.com/avihut/herdr-pane-rename) adds persistent entry-plug titles, Cmd+F2 and Rename pane in the native pane context menu. The optional capability is checked once when that menu opens; missing dependencies keep the original menu. Blank names restore automatic titles. The dialog uses this layout’s palette and Geist Mono controls.

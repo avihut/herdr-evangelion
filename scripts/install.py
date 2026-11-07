@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import sys
 import tempfile
 from datetime import datetime, timezone
 
@@ -16,7 +17,7 @@ def files():
     for directory in ['assets', 'fonts']:
         ordered.extend(sorted((ROOT/MOD/directory).rglob('*')))
     ordered = [p.relative_to(ROOT) if p.is_absolute() else p for p in ordered if (p if p.is_absolute() else ROOT/p).is_file()]
-    ordered.extend(MOD/name for name in ['kit.js','model.js','simulation.js','README.md','RECIPE.md','VALIDATION.md','main.js'])
+    ordered.extend(MOD/name for name in ['pane-rename.js','kit.js','model.js','simulation.js','README.md','RECIPE.md','VALIDATION.md','main.js'])
     ordered.extend([Path('themes/evangelion-dark.json'),Path('themes/evangelion-light.json'),Path('layouts/evangelion.json')])
     return ordered
 
@@ -47,13 +48,50 @@ def install(home, update=False, dry_run=False):
         for rel in collisions:
             target=backup/rel;target.parent.mkdir(parents=True,exist_ok=True)
             shutil.copy2(home/rel,target)
-    # Manifest first; main.js after its modules; layout last. Each file is atomic.
-    for rel in entries:
-        target=home/rel;target.parent.mkdir(parents=True,exist_ok=True)
-        with tempfile.NamedTemporaryFile(dir=target.parent,delete=False) as out:
-            temporary=Path(out.name);out.write((ROOT/rel).read_bytes())
-        try: os.replace(temporary,target)
-        finally: temporary.unlink(missing_ok=True)
+    # Prepare the complete mod outside the watched mods directory. Replacing each
+    # file live causes a reload per file and can exhaust Herdr's mod runtime.
+    home.mkdir(parents=True,exist_ok=True)
+    stage=Path(tempfile.mkdtemp(prefix='.herdr-evangelion-stage-',dir=home))
+    cleanup=True
+    try:
+        target_mod=home/MOD
+        staged_mod=stage/'mod'
+        old_mod=stage/'previous-mod'
+        if target_mod.exists():
+            # Keep local QA captures, generated types and other unowned files.
+            shutil.copytree(target_mod,staged_mod,symlinks=True)
+        else: staged_mod.mkdir()
+        for rel in entries:
+            target=staged_mod/rel.relative_to(MOD) if rel.is_relative_to(MOD) else stage/'files'/rel
+            target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copy2(ROOT/rel,target)
+        target_mod.parent.mkdir(parents=True,exist_ok=True)
+        old_moved=False;new_installed=False;written=[]
+        try:
+            if target_mod.exists():
+                os.replace(target_mod,old_mod);old_moved=True
+            os.replace(staged_mod,target_mod);new_installed=True
+            # Theme files follow the complete mod; layout is last.
+            for rel in entries:
+                if rel.is_relative_to(MOD):continue
+                target=home/rel;target.parent.mkdir(parents=True,exist_ok=True)
+                os.replace(stage/'files'/rel,target);written.append(rel)
+        except OSError:
+            cleanup=False
+            # Restore earlier files and the previous whole mod on a failed swap.
+            for rel in reversed(written):
+                target=home/rel
+                if rel in collisions:
+                    restore=stage/'restore'/rel;restore.parent.mkdir(parents=True,exist_ok=True)
+                    shutil.copy2(backup/rel,restore);os.replace(restore,target)
+                else: target.unlink(missing_ok=True)
+            if new_installed:shutil.rmtree(target_mod)
+            if old_moved:os.replace(old_mod,target_mod)
+            cleanup=True
+            raise
+    finally:
+        if cleanup:shutil.rmtree(stage)
+        else:print(f"Rollback incomplete; recovery files retained at {stage}",file=sys.stderr)
     return {'home':str(home),'files':len(entries),'backup':str(backup) if backup else None}
 
 def main():

@@ -1,3 +1,4 @@
+import { renamedPane } from "./pane-rename.js";
 import { div, svg } from "gpui-kit";
 import { h_flex, v_flex } from "gpui-base";
 import { agents, spaces, panes, machines, layouts, props, shared, setShared, setAgentOrder, run, window, exec, closeOverlay } from "herdr";
@@ -168,7 +169,7 @@ export default class Evangelion extends Simulator {
       .border_b(1).border_color(pane.focused?p.orange:p.border).on_click(()=>run("pane.focus",{pane:pane.pane}))
       .on_mouse_down("right",right(()=>context("pane",{pane:pane.pane,terminal:pane.terminal})))
       .child(label(a?`EVA-${pad(u)} / ${a.address}`:"ENTRY PLUG",a?unitColor(u):p.orange,10))
-      .child(div().flex_1().min_w(0).truncate().text_size(10).child(pane.title||pane.program?.name||"Terminal"))
+      .child(div().flex_1().min_w(0).truncate().text_size(10).child(renamedPane(pane)||pane.title||pane.program?.name||"Terminal"))
       .child(indicator(pane.status))
       .child(button(`split-${pane.pane}`,"+",()=>run("pane.split",{pane:pane.pane,direction:"right"}),{h:19,px:4,tip:"Split this pane right"}))
       .child(button(`zoom-${pane.pane}`,pane.zoomed?"↙":"↗",()=>run("pane.zoom",{pane:pane.pane}),{h:19,px:4,tip:"Toggle pane zoom"}));

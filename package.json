@@ -5,5 +5,5 @@
   "type": "module",
   "description": "NERV operations layout for Herdr with EVA agents, MAGI telemetry and training games",
   "license": "MIT",
-  "scripts": { "test": "node --test tests/model.test.mjs" }
+  "scripts": { "test": "node --test tests/*.test.mjs" }
 }

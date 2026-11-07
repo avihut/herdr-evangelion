@@ -91,6 +91,10 @@ Herdr mods are native GPUI JavaScript, not HTML or a web view. Read the installe
 
 For a new mod, create `mod.json` with `"place": "none"` **before** writing `main.js`. Otherwise Herdr can auto-dock it and wrap the current layout's root. Check for name collisions, install new names, keep assets together, and write the layout JSON after its dependencies exist. Avoid changing global key bindings for ordinary layout features.
 
+For updates, stage the complete mod outside the watched `mods/` directory and replace its folder with renames. Preserve local unowned files, keep a backup, and retain recovery files if rollback fails. Prepare all dependencies before exposing the entry point; write themes and the layout after the complete mod. Validate the installed package's transitive local imports in a temporary home, not only the source tree.
+
+Repeated file-by-file hot reloads have exhausted the host's mod runtime in observed XP testing. Reinstalling, switching layouts and creating another test tab did not recover that incident; only restarting Herdr.app did. If `out of memory` or repeated `Null` errors appear, stop live installs, switches and test tabs. Record the error and coordinate recovery. Do not restart the app without the user's authorization, and never restart herdr-core as a workaround. The exact cause of a new incident still needs evidence; do not assume every OOM has the same cause.
+
 Keep pure game and parsing logic in separate modules so it can be tested without launching Herdr. Keep slow work in `cx.spawn`, use the callback's current context, and do not retain `cx` for later use. Guard overlapping host probes and handle failures without inventing successful results.
 
 Coordinate file ownership when other agents are active. Give each layout its own mod, theme and asset paths. Ask before editing another agent's module; prefer a local native picker when the shared picker is owned elsewhere. Coordinate live-window testing so two agents do not switch the window or change appearance at once.
@@ -151,5 +155,6 @@ Add a brief date and explanation below for meaningful refinements. Do not keep c
 | 2026-11-07 | Added verification of running agents in light mode. Adopted dark terminal surfaces within light controls where retained Codex dark formatting makes pale terminal backgrounds unreadable. |
 | 2026-11-07 | Added the user's requirement to keep this reference linked from house rules and update it as the workflow is expanded or refined. |
 | 2026-11-07 | Added public per-layout packaging and rich, faithful README showcases with original previews, implemented-feature tours, game rules, spoiler sections, source workflow and honest validation limits. Recorded room navigation, advisor portraits and accurate 3D terminology as source-dependent design options. |
+| 2026-11-07 | Added whole-folder staged updates, installed-import completeness tests, rollback recovery retention, and a stop-and-coordinate rule for observed host runtime exhaustion. |
 
 This is a portable guide copy. Reconcile refinements with your local canonical guide; do not publish personal configuration or private QA captures.
